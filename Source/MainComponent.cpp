@@ -30,21 +30,30 @@ MainComponent::~MainComponent()
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-    // This function will be called when the audio device is started, or when
-    // its settings (i.e. sample rate, block size, etc) are changed.
-
-    // You can use this function to initialise any resources you might need,
-    // but be careful - it will be called on the audio thread, not the GUI thread.
-
-    // For more details, see the help for AudioProcessor::prepareToPlay()
+    freq=440;
+    phase =0;
+    waveTableSize=1024;
+    increment=freq*waveTableSize/sampleRate;
+    amp=0.25;
+    
+    //calc one sinewave cycle
+    for (int i=0; i<waveTableSize; i++) {
+        sineWaveTable.insert(i, sin(2.0*juce::double_Pi*i/waveTableSize));
+    }
 }
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
-   
-    bufferToFill.clearActiveBufferRegion();
-}
+    float* const leftSpeaker=bufferToFill.buffer->getWritePointer(0, bufferToFill.startSample);
+    float* const rightSpeaker=bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample);
 
+    for (int sample=0; sample<bufferToFill.numSamples; sample++) {
+        leftSpeaker[sample]=sineWaveTable[(int)phase]*amp;
+        rightSpeaker[sample]=sineWaveTable[(int)phase]*amp;
+        phase=fmod(phase+increment,waveTableSize);
+
+        }
+}
 void MainComponent::releaseResources()
 {
     // This will be called when the audio device stops, or when it is being
