@@ -14,7 +14,9 @@ public:
     MainComponent();
     ~MainComponent() override;
 
-    //==============================================================================
+    void extracted();
+
+//==============================================================================
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
     void releaseResources() override;
@@ -22,7 +24,6 @@ public:
     //==============================================================================
     void paint (juce::Graphics& g) override;
     void resized() override;
-
 private:
     //==============================================================================
     juce::Random rand;
@@ -32,6 +33,11 @@ private:
     double phase;
     double increment;
     double amp;
+    double sampleRate1;
+    juce::Slider ampSlider;
+    juce::Label ampLabel;
+    juce::Slider freqSlider;
+    juce::Label freqLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
