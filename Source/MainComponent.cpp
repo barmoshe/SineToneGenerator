@@ -8,7 +8,7 @@ MainComponent::MainComponent()
     setSize (800, 600);
    
     addAndMakeVisible(freqSlider);
-    freqSlider.setRange(50, 18500);
+    freqSlider.setRange(50, 3000);
     freqSlider.setTextValueSuffix("Hz");
     freqSlider.setValue(440);
     
