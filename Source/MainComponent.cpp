@@ -54,11 +54,12 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
     waveTableSize=1024;
     amp=0.25;
     sampleRate1=sampleRate;
-    increment=freq*waveTableSize/sampleRate;
+    phaseIncrement=freq*waveTableSize/sampleRate;
 
     //calc one sinewave cycle
     for (int i=0; i<waveTableSize; i++) {
         sineWaveTable.insert(i, sin(2.0*juce::double_Pi*i/waveTableSize));
+       
     }
 }
 
@@ -70,20 +71,13 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
     float* const rightSpeaker=bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample);
     amp=ampSlider.getValue()/100;
     freq=freqSlider.getValue();
-    increment=freq*waveTableSize/sampleRate1;
+    phaseIncrement=freq*waveTableSize/sampleRate1;
     for (int sample=0; sample<bufferToFill.numSamples; sample++) {
         leftSpeaker[sample]=sineWaveTable[(int)phase]*amp;
         rightSpeaker[sample]=sineWaveTable[(int)phase]*amp;
-        phase=fmod(phase+increment,waveTableSize);
+        phase=fmod(phase+phaseIncrement,waveTableSize);
 
         }
-}
-void MainComponent::releaseResources()
-{
-    // This will be called when the audio device stops, or when it is being
-    // restarted due to a setting change.
-
-    // For more details, see the help for AudioProcessor::releaseResources()
 }
 
 //==============================================================================
@@ -111,9 +105,3 @@ void MainComponent::paint (juce::Graphics& g)
   
 }
 
-void MainComponent::resized()
-{
-    // This is called when the MainContentComponent is resized.
-    // If you add any child components, this is where you should
-    // update their positions.
-}

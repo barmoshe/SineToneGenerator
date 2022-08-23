@@ -31,7 +31,7 @@ private:
     double waveTableSize;
     double freq;
     double phase;
-    double increment;
+    double phaseIncrement;
     double amp;
     double sampleRate1;
     juce::Slider ampSlider;
