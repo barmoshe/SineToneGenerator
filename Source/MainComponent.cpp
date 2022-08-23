@@ -79,6 +79,13 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
 
         }
 }
+void MainComponent::releaseResources()
+{
+    // This will be called when the audio device stops, or when it is being
+    // restarted due to a setting change.
+
+    // For more details, see the help for AudioProcessor::releaseResources()
+}
 
 //==============================================================================
 void MainComponent::paint (juce::Graphics& g)
@@ -105,3 +112,9 @@ void MainComponent::paint (juce::Graphics& g)
   
 }
 
+void MainComponent::resized()
+{
+    // This is called when the MainContentComponent is resized.
+    // If you add any child components, this is where you should
+    // update their positions.
+}
